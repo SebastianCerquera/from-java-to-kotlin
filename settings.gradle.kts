@@ -1,3 +1,3 @@
 
-rootProject.name = "MiPrimerProyecto"
+rootProject.name = "from-java-to-kotlin"
 
