@@ -1,6 +1,7 @@
 package courseraWeek2;
 
 import java.awt.*;
+import java.awt.Color;
 
 import static java.awt.Color.*;
 

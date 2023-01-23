@@ -22,3 +22,5 @@ fun updateWeather(degrees: Int) {
     }
 
 }
+
+fun isAString(s: String) : Boolean {return s.isNotBlank()}

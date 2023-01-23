@@ -119,13 +119,96 @@ public static final int sum()
 
 - **Mas info:** <https://www.coursera.org/learn/kotlin-for-java-developers/lecture/MGwZg/named-default-arguments>
 
+
 ### Estructuras de control:
  #### Condicionales: if & when
 
-Él `if` y el `when` son las estructuras de control básicas, él `if` se usa igual que en *Java*, solo que en *Kotlin* 
-puedes igualar una variable a un `if` directamente, el caso del `when` funciona similar al `swich` de *Java*, (una forma
-de agregar multiples `if-else`).
+Él `if` y el `when` son las estructuras de control básicas, él `if` se usa igual que en *Java*, solo que en *Kotlin*
+puedes igualar una variable a un `if` directamente, el caso del `when` funciona similar al `switch` de *Java*, (una forma
+de agregar multiples `if-else`), pero no es necesario usar `break` ya que en *Kotlin* una vez se ingrese.
+
+Cuando requerimos algún tipo de jerarquía y se requiere validar algún tipo o subtipos, y de acuerdo hacer una acción, en
+*Kotlin* podemos usar `when` para esto.
+
 
 - **Mas info:** <https://www.coursera.org/learn/kotlin-for-java-developers/lecture/7iKgc/conditionals-if-when>
+
+ #### Loops
+
+Las formas básicas de ciclos en *Java* son: `for`, `while` y `do-while`, en *Kotlin* usamos la misma estructura del
+`while` y `do-while` que en *Java*, pero él `for` es diferente:
+
+~~~
+val list = listOf("a", "b", "c")
+for(s :String in list) {
+  print(s)
+}
+~~~
+
+La especificación del tipo dentro del for es opcional. Para el caso de iterar un Map, también es diferente en *Kotlin*:
+
+~~~
+val map = mapOf(1 to "one",
+                2 to "two",
+                3 to "three")
+for ((key, value) in map) {
+  println("$key = $value")
+}
+~~~
+
+- **Mas info:** <https://www.coursera.org/learn/kotlin-for-java-developers/lecture/WOweq/loops>
+
+ #### 'in' checks & ranges
+La keyword `in` es utilizada para establecer un rango, se usa tanto en *Int* como en *String*. Suele venir acompañado de
+**..** : `c in 'a'..'z'`.
+
+- **Mas info:** <https://www.coursera.org/learn/kotlin-for-java-developers/ungradedWidget/Yqyi3/kotlin-playground-checking-identifier>
+
+
+ #### Exception
+El manejo de excepciones en *Kotlin* es muy similar al de *Java* con una importante diferencia *Kotlin* no hace 
+diferencia entre *checked* y *unchecked* excepciones. Para el manejo de todas las excepciones lo hacemos con `throw`.
+
+En *Kotlin* él `try` es una expresión, lo que quiere decir que se puede asignar el resultado a una variable.
+
+- **Mas info:** <https://www.coursera.org/learn/kotlin-for-java-developers/lecture/MCxNk/exceptions>
+
+### Extensions
+ 
+ #### Extensions Functions
+Las funciones de extensión, extienden la clase, se define fuera de la clase, pero puede ser llamada como miembro de ella.
+El tiempo que se extiende la función se denomina *Receiver*, el receiver es llamado por referencia `this`, también se
+puede llamar los miembros del receiver dentro de una función de extensión sin especificar él `this`, ejemplo:
+
+~~~
+fun String.lastChar() = this.get(this.length - 1)
+fun String.lastChar() = get(length -1)
+~~~
+
+Estas funciones son necesarias hacerle el *import com.example.package.etc*  para poder llamarlas desde otras clases.
+
+Para llamar este tipo de funciones desde *Java* es necesario importarlas como `static`.
+
+- **Mas info:** <https://www.coursera.org/learn/kotlin-for-java-developers/lecture/i8Av9/extension-functions>
+
+ #### Examples from the Standard Library
+
+Kotlin standard library = Java standard library + extensions
+
+Nota: `set.javaClass` en *Kotlin* es similar a: `set.getClass()` en *Java· Cuando creas colecciones usando las funciones
+desde *Kotlin Standard Library*, instancias de *Java Standard Classes* son creadas. La biblioteca de *Kotlin* 
+simplemente provee extensiones de regular *Java collections*. 
+
+No existen algo como *Kotlin SDK*, simplemente es *JDK* + *extensiones*.
+
+- **Mas info:** <https://www.coursera.org/learn/kotlin-for-java-developers/ungradedWidget/drdf0/kotlin-playground-sum-as-an-extension-function>
+
+ #### Calling Extensions
+*Kotlin* resuelve el llamado de clase *Padre* a clase *Hijo* igual que lo hace *Java*, con los métodos statics. Por lo 
+general elige el padre, una extensión no puede ocultar a un miembro por completo, pero si puede sobrecargarlo.
+
+
+
+
 
 ## Semana 3
