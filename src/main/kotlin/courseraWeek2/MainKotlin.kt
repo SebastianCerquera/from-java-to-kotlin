@@ -1,11 +1,17 @@
 import  courseraWeek2.ColorKotlin
 import courseraWeek2.PersonKotlin
+import courseraWeek2.sum
 import java.awt.Color
 import java.awt.Color.*
+
+
 
 fun main() {
     val person = PersonKotlin("Alicia" , 27)
     println(person.toString())
+
+    val sumaLista = listOf(4,3,2).sum()
+
 
 }
 

@@ -207,8 +207,142 @@ No existen algo como *Kotlin SDK*, simplemente es *JDK* + *extensiones*.
 *Kotlin* resuelve el llamado de clase *Padre* a clase *Hijo* igual que lo hace *Java*, con los métodos statics. Por lo 
 general elige el padre, una extensión no puede ocultar a un miembro por completo, pero si puede sobrecargarlo.
 
-
-
-
-
 ## Semana 3
+
+### Nullability
+
+ #### Nullable types
+
+Sir Tony Hoare fue el inventor del null reference. Son errores difíciles de solucionar, lo cual hace que a menudo estas
+excepciones sean `thrown`. Un moderno acercamiento es hacer que NPE sea un *compile-time* error y no un *run-time* error.
+
+*Kotlin* distingue entre tipos nullables y tipo no nullables, agregando `?` al tipo de variable.  Ejemplo:
+
+~~~
+val s1: String = null //No es posible
+val s2: String? = null 
+~~~
+
+*?:*, es sinónimo de nullable. Haciendo uso de *Elvis operator ?:*, se puede dar valores por defecto. El cual remplazaría
+un if-else.
+
+~~~
+foo ?: bar
+    foo != null ---> foo
+    foo == null ---> bar
+~~~
+
+Se puede lanzar un null pointer exception usando: *!!*
+
+~~~
+foo!!
+    foo != null ---> foo
+    foo == null ---> NPE
+~~~
+
+En general es preferible usar: `?.  ?: if-checks` a `!!`. 
+
+- **Mas info:** <https://www.coursera.org/learn/kotlin-for-java-developers/lecture/wM6YD/nullable-types>
+
+
+ #### Nullable Types Under the Hood
+
+Anotaciones: *@Nullable*, *@NotNull*
+
+La clase `Optional` aunque es similar al manejo de tipos nullables, son muy diferentes en términos de rendimiento. Los 
+tipos *Optional* es un wrapper que almacena la referencia al objeto inicial. En cambio, los tipos nullables no crean 
+ningún wrapper, se implementan mediante anotaciones.
+
+Existe una diferencia entre una lista de elementos nullables `List<Int?>` (cada elemento dentro de la lista puede ser 
+nulo o no), y una lista nullable `List<Int>?` tola la lista puede ser nula o no.
+
+- **Mas info:** <https://www.coursera.org/learn/kotlin-for-java-developers/lecture/39clE/nullable-types-under-the-hood>
+
+### Functional Programming
+  
+ #### Lambdas
+
+Lambda es una función anónima, que se puede utilizar como una expresión. En *Kotlin* Lambda siempre va con llaves, 
+la sintaxis:
+~~~
+{ x: Int, y: Int -> x + y }
+~~~
+
+Si *Kotlin* tiene su propio argumento se puede remplazar por `it` ejemplo:
+
+~~~
+list.any { i -> i > 0 }
+list.any { it > 0 }
+~~~
+
+Si se requiere una lambda multilínea para lógicas más complicadas, se escribe varias líneas y la última de estas es la
+que se retornara:
+~~~
+lis.any {
+    print("Procesando $it")
+    it > 0  //esto es lo que retorna.
+}
+~~~
+
+
+Si se usa un map, se puede desconstruir dentro de una lambda y en vez de usar un parámetro se llaman ambos:
+~~~
+map.mapValues { (key,values) -> "$key -> $values!" }
+~~~
+
+Si no se usa alguno de estos valores, este se puede reemplazar por _ en la lambda:
+~~~
+map.mapValues { (_,values) -> "$values!" }
+~~~
+
+- **Mas info:** <https://www.coursera.org/learn/kotlin-for-java-developers/lecture/5WnAh/lambdas>
+
+ #### Common operations on collections
+Él `filter` y él `map` dentro de la biblioteca estándar de *Kotlin* son funciones de extensión. El *filter* dentro de 
+una lista mantienen los elementos que satisfacen el predicado dado. El *map* transforma cada elemento dentro de una 
+colección y almacena todos los elementos transformados en una nueva lista.
+Existen predicados tales como: *any (all, none)* que hacen verificación sobre una lista y devuelven un Boolean. El 
+operador: *find* encuentra un elemento que satisface el predicado dado y lo devuelve como resultado, si no encuentra un 
+elemento que satisfaga devuelve un `null`. Otro operador: *first / firstOrNull* hace la misma función que *find*, pero 
+devuelve el primer elemento o nulo que satisface, first arroja una excepción si no encuentra el elemento. El operador: 
+*count* recuenta el número de veces que se satisface el predicado. El operador: *partition* divide la colección en dos 
+colecciones la que cumple el predicado y los restantes elementos. El operador: *groupBy* es usado para dividir la 
+colección en más de dos grupos (dividen maps siendo su nueva `key` el predicado seleccionado). El operador: 
+*associateBy* es similar al groupBy, solo que este requiere si o si una key única, ya que remueve los que tengan claves
+duplicadas. El operador: *associate* para crear un map asociado a una lista.  El operador: *zip* otorga una manera de 
+organizar un par de listas, devuelve una lista de pares donde cada par contiene un elemento de la primera y un elemento
+de segunda lista. El operador: *flatten* se utiliza en una lista de listas, combina todos los elementos en una lista 
+anidada y los devuelve. El operador: *flatMap*, convierte cada elemento inicial en una lista. Toma los String y los 
+mapea en dos lista luego los aplana en una sola lista.
+
+- **Mas info:** <https://www.coursera.org/learn/kotlin-for-java-developers/lecture/kpua0/common-operations-on-collections>
+
+ #### Function Types
+
+En *Kotlin* es posible almacenar una lambda como una variable. Se puede llamar una lambda previamente almacenada en una 
+variable, sobre cualquier colección que se tenga dada, siempre que se espere una expresión de tipo función ejemplo: 
+`println(list.any(isEven))`. Incluso se puede llamar una lambda de una forma más directa siguiendo las siguientes 
+sintaxis: `{ println("hey!") }()`, `run { println("hey!") }` (hacen exactamente lo mismo).
+
+- **Mas info:** <https://www.coursera.org/learn/kotlin-for-java-developers/lecture/865m3/function-types>  
+
+ #### Member references
+
+Al igual que *Java* en *Kotlin* se maneja tipo por referencias, dicha sintaxis es la misma en ambos lenguajes. Ejemplo:
+
+~~~
+    class Person(val name: String, val age: Int)
+    people.maxBy { it.age}
+    
+    //convert lambda to reference:
+    people.maxBy(Person::age)
+~~~
+
+Tener en cuenta que se puede guardar una lambda en una variable, peor no se puede guardar una función en una variable,
+el compilador arroja un error. Ya que en *Kotlin* hay una clara distinción entre variable y función. Para solucionar 
+este inconveniente se debe usar la sintaxis de la función de referencia: `::isEven` 
+
+- **Mas info:** <https://www.coursera.org/learn/kotlin-for-java-developers/lecture/vhWDv/member-references>
+
+
+## Semana 4

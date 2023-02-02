@@ -9,6 +9,6 @@ fun List<Int>.sum(): Int {
 }
 
 fun main(args: Array<String>) {
-    val sum = listOf(1, 2, 4).sum()
+    val sum = listOf(1, 2, 14).sum()
     println(sum)    // 6
 }

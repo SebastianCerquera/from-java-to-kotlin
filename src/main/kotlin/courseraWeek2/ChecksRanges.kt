@@ -10,9 +10,9 @@ fun main() {
 
     println(recognize('$'))
 
-    println("Kotlin" in "Java".."Scala")
+    println(("Java".."Scala").javaClass)
+    println((1..10).javaClass)
     println("Kotlin" in setOf("Java", "Scala"))
-
 
 
 }
