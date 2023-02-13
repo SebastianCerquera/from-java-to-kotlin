@@ -346,3 +346,141 @@ este inconveniente se debe usar la sintaxis de la función de referencia: `::isE
 
 
 ## Semana 4
+
+### Properties
+
+ #### Properties
+*Kotlin* soporta las *properties* cono una característica de lenguaje independiente. En *Kotlin* no llamas los getters 
+ni los setters.  En *Kotlin* no se trabaja con campos, se trabaja con propiedades.
+
+Se puede definir una propiedad en una interfaz, luego se puede sobreescribir dichas propiedades en una clase, estas 
+propiedades nose puede hacer un *"Smart Cast"*
+
+**Propiedades por extensión** estas se puede definir en *Kotlin*, la sintaxis es similar a la descrita en las funciones 
+por extensión. 
+
+- **Mas info:** <https://www.coursera.org/learn/kotlin-for-java-developers/lecture/GVJdx/properties>
+- **Mas info:** <https://www.coursera.org/learn/kotlin-for-java-developers/lecture/KEgTB/more-about-properties>
+
+ #### Lazy or late initialization
+
+**Lazy property** son propiedades que no hacen nada al menos que el resultado sea necesario. En *Kotlin* se define 
+utilizando la sintaxis `by lazy`, son propiedades delegadas a futuro.
+
+**Lateinit** se usa cuando queremos inicializar una propiedad pero no en su constructor, sino en el método designado 
+para esto. Se agrega la palabra clave *lateinit* antes de la var ejemplo: `lateinit var myData: MyData`. Existen 
+restricciones en el uso de *lateinit* entre ellos es que no puede venir con la palabra reservada `val`.
+
+- **Mas info:** <https://www.coursera.org/learn/kotlin-for-java-developers/lecture/MHhas/lazy-or-late-initialization>
+
+
+### Object-oriented Programming
+
+ #### OPP in Kotlin
+Los valores predeterminados en Kotlin son diferentes: `public, private, internal` y `final, open, abstract`. En *Kotlin* 
+cualquier declaración es `public` y `final` por defecto. Si se desea que no sea `final` se debe marcar explícitamente 
+como `open`. No existe visibilidad privada de paquetes `package private`, `internal` significa que la declaración es 
+visible desde el mismo módulo. En resumen:
+
+- `final` (used by default): no puede ser anulado.
+- `open`: puede ser anulado(sobreescrito).
+- `abstract`: deben ser sobreescritos, no tienen una implementación.
+- `override` (mandatory): anula un miembro en una superclase o interfaz.
+- 
+Para evitar clases de sobrescritura o anulación accidentales, en *Kotlin* él `override` es obligatorio.
+
+| **Modificador** | Miembro de clase      | Declaración Top-level | 
+|-----------------|-----------------------|-----------------------|
+| public          | visible donde sea     | visible donde sea     |
+| internal        | visible en el módulo  | visible en el módulo  |
+| protected       | visible en sub-clases | ----                  |
+| private         | visible en la clase   | visible en el archivo |
+
+Existe una diferencia con la estructura de los *Packages*: en *Java* cada clase debe venir en un solo archivo separado,
+por el contrario, en *Kotlin* ya no es necesario, se puede poner varias clases en un archivo. La guía de estilos de
+Kotlin sugiere que el nombre de la clase lleve de prefijo el nombre del packages, en mayúsculas.
+
+- **Mas info:** <https://www.coursera.org/learn/kotlin-for-java-developers/lecture/rsSoC/oop-in-kotlin>
+
+
+ #### Constructors, Inheritance syntax
+
+Un constructor es una función especial, utilizado para inicializar un objeto recién creado, a diferencia de Java en 
+Kotlin no se usa la palabra reservada `new`. Por el contrario, se llama un constructor como una función regular. Se 
+pueden distinguir entre un llamado de una función y un constructor por su sintaxis, la clase es escrita iniciando con 
+Mayúscula, mientras que una función inicia con minúscula. Si no se define un constructor en la clase, el compilador de 
+*Kotlin* genera uno sin parámetros por defecto.
+
+En kotlin tiene la misma sintaxis para *extends & implements*, de Java; se debe usar:
+
+~~~
+interface Base
+class BaseImple : Base
+
+open class Parent
+class Child :  Parent()
+~~~
+
+- **Mas info:** <https://www.coursera.org/learn/kotlin-for-java-developers/lecture/naOf0/constructors-inheritance-syntax>
+
+ #### Class modifiers - I
+
+La clase `enum` representa enumeración tal como en *Java*. Dentro de una clase enum, se puede definir miembros de 
+funciones y propiedades.
+
+Las *data class*, el modificador de `data` tiene métodos útiles, como: `equals` , `hashCode`, `copy`, `toString`, entre
+otros.
+
+Para *Kotlin* `==` llama el igual valores, y `===` revisa la referencia si es igual.
+
+- **Mas info:** <https://www.coursera.org/learn/kotlin-for-java-developers/lecture/VDJCq/class-modifiers-i>
+
+ #### Class modifiers - II
+
+El *sealed modifier*, restringe la jerarquía de clases, todas las subclases deben estar en el mismo archivo. 
+
+**Clases nested or inner**
+
+| **In java**            | **In Kotlin**        | **Class declared within another class**  |
+|------------------------|----------------------|------------------------------------------|
+| static class A         | class A (by default) | nested class                             |
+| class A (by default)   | inner class A        | inner class                              |
+
+- **Mas info:** <https://www.coursera.org/learn/kotlin-for-java-developers/lecture/1lMBW/class-modifiers-ii>
+
+ #### Objetos
+
+Un objeto es un singleton en *Kotlin*, un Singleton es una clase que tiene solo una instancia. Para usar un `object` de
+Kotlin dentro de Java se hace mediante: `KSingleton.INSTANCE.foo();`.
+
+Las expresiones de objetos, reemplaza a las clases anónimas de Java. Cuando se llama `objects expressions` estas ya no 
+son *singleton*.
+
+El `companion object` es un objeto anidado dentro de una clase, se puede acceder a los miembros usando el nombre de la 
+clase.
+
+- **Mas info:** <https://www.coursera.org/learn/kotlin-for-java-developers/lecture/85GKr/objects-object-expressions-companion-objects>
+
+ #### Constants
+
+Para un tipo primitivo y String, se define `const`, lo que lo convierte en una constante en tiempo de compilación. Si no 
+se desea generar *getters*, se debe agregar la anotación: `@JvmField`, esta anotación expone una property como un campo
+en Java. @JvmField hace una propiedad estática si se usa en el nivel superior o dentro del *object*. Sí la utilizamos en 
+una clase regular se genera un campo regular.
+
+- **Mas info:** <https://www.coursera.org/learn/kotlin-for-java-developers/lecture/9l8V5/constants>
+
+ #### Generics
+
+Al igual que Java que se puede definir una interfaz o una clase con un parámetro genérico, y ya cuando se utiliza esta 
+llave se sustituye por un tipo específico. Si se quiere que un tipo genérico no sea nullable `<T : Any> `.
+
+Cuando se llama una función genérica desde Java, y tiene dos usos de tipo diferentes es necesario agregarle la anotación
+`@JvmName("nameOfSecond")`, para que funcione correctamente desde *Java*, que la reconocerá con este nombre, ya que viene
+desde el bytecode.
+
+- **Mas info:** <https://www.coursera.org/learn/kotlin-for-java-developers/lecture/ZnSIz/generics>
+
+
+
+
